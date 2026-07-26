@@ -91,4 +91,35 @@ public class StaffController : Controller
         TempData["Exito"] = $"Empleado \"{staff.Nombre}\" actualizado correctamente.";
         return RedirectToAction(nameof(Index));
     }
+
+    // GET: /Staff/Delete/5 (solo muestra confirmación, NUNCA borra en GET)
+    [Authorize(Roles = "Administrador")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var staff = await _context.Personal.FindAsync(id);
+
+        if (staff == null)
+            return NotFound();
+
+        return View(staff);
+    }
+
+    // POST: /Staff/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Administrador")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var staff = await _context.Personal.FindAsync(id);
+
+        if (staff != null)
+        {
+            _context.Personal.Remove(staff);
+            await _context.SaveChangesAsync();
+            TempData["Exito"] = $"Empleado \"{staff.Nombre}\" eliminado correctamente.";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
 }
