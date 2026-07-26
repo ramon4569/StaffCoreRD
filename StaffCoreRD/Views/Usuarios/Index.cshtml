@@ -1,0 +1,36 @@
+﻿@model List<StaffCoreRD.Models.UsuarioRolViewModel>
+@{
+    ViewData["Title"] = "Gestión de usuarios";
+}
+
+<h2 class="mb-4">Gestión de usuarios y roles</h2>
+
+<table class="table table-striped align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>Correo</th>
+            <th>Rol actual</th>
+            <th>Cambiar rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.Email</td>
+                <td><span class="badge bg-secondary">@u.RolActual</span></td>
+                <td>
+                    <form asp-action="CambiarRol" method="post" class="d-flex gap-2">
+                        <input type="hidden" name="id" value="@u.Id" />
+                        <select name="nuevoRol" class="form-select form-select-sm" style="width:auto;">
+                            <option value="Administrador" selected="@(u.RolActual == "Administrador")">Administrador</option>
+                            <option value="RRHH" selected="@(u.RolActual == "RRHH")">RRHH</option>
+                            <option value="Viewer" selected="@(u.RolActual == "Viewer")">Viewer</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Guardar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
