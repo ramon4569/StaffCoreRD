@@ -26,6 +26,12 @@
                                 <a class="nav-link text-dark" asp-controller="Staff" asp-action="Reporte">Resumen por departamento</a>
                             </li>
                         }
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                            </li>
+                        }
                     </ul>
 
                     <ul class="navbar-nav">
@@ -47,12 +53,6 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Registrarse</a>
-                            </li>
-                        }
-                        @if (User.IsInRole("Administrador"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
                             </li>
                         }
                     </ul>
