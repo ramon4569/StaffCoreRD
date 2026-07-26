@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using StaffCoreRD.Models;
 
 namespace StaffCoreRD.Models
 {
@@ -14,6 +18,9 @@ namespace StaffCoreRD.Models
         public decimal Salario { get; set; }
         public DateTime FechaIngreso { get; set; }
         public bool Activo { get; set; } = true;
+
+     
+       
     }
 
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StaffCoreRD.Data;
+using StaffCoreRD.Models;
 
 namespace StaffCoreRD.Controllers;
 
@@ -22,6 +23,32 @@ public class StaffController : Controller
             .OrderBy(s => s.Nombre)
             .ToListAsync();
 
+
         return View(personal);
+
+
+    }
+
+    // GET: /Staff/Create
+    [Authorize(Roles = "Administrador,RRHH")]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: /Staff/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Administrador,RRHH")]
+    public async Task<IActionResult> Create(Staff staff)
+    {
+        if (!ModelState.IsValid)
+            return View(staff);
+
+        _context.Personal.Add(staff);
+        await _context.SaveChangesAsync();
+
+        TempData["Exito"] = $"Empleado \"{staff.Nombre}\" agregado correctamente.";
+        return RedirectToAction(nameof(Index));
     }
 }
