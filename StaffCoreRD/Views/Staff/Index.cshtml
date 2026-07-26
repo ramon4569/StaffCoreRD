@@ -6,10 +6,21 @@
 
 <h2 class="mb-4">Personal</h2>
 
-@if (User.IsInRole("Administrador") || User.IsInRole("RRHH"))
-{
-    <a asp-action="Create" class="btn btn-primary mb-3">+ Nuevo empleado</a>
-}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    @if (User.IsInRole("Administrador") || User.IsInRole("RRHH"))
+    {
+        <a asp-action="Create" class="btn btn-primary">+ Nuevo empleado</a>
+    }
+    else
+    {
+        <span></span>
+    }
+    <a asp-action="Reporte" class="btn btn-outline-dark">Ver resumen por departamento</a>
+</div>
+
+<div class="mb-3">
+    <input type="text" id="buscador" class="form-control" placeholder="Buscar por nombre, cédula, cargo o departamento..." />
+</div>
 
 <table class="table table-striped table-hover align-middle">
     <thead class="table-dark">
@@ -28,7 +39,9 @@
         @foreach (var s in Model)
         {
             <tr>
-                <td>@s.Nombre</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@s.Id" class="text-decoration-none">@s.Nombre</a>
+                </td>
                 <td>@s.Cedula</td>
                 <td>@s.Cargo</td>
                 <td>@s.Departamento</td>
@@ -45,6 +58,7 @@
                     }
                 </td>
                 <td>
+                    <a asp-action="Details" asp-route-id="@s.Id" class="btn btn-sm btn-outline-secondary">Ver</a>
                     @if (User.IsInRole("Administrador") || User.IsInRole("RRHH"))
                     {
                         <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">Editar</a>
@@ -64,3 +78,17 @@
         </tr>
     </tfoot>
 </table>
+
+@section Scripts {
+    <script>
+        document.getElementById('buscador').addEventListener('input', function () {
+            const filtro = this.value.toLowerCase();
+            const filas = document.querySelectorAll('table tbody tr');
+
+            filas.forEach(fila => {
+                const texto = fila.innerText.toLowerCase();
+                fila.style.display = texto.includes(filtro) ? '' : 'none';
+            });
+        });
+    </script>
+}

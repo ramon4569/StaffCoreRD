@@ -29,6 +29,37 @@ public class StaffController : Controller
 
     }
 
+    // GET: /Staff/Details/5
+    [Authorize]
+    public async Task<IActionResult> Details(int id)
+    {
+        var staff = await _context.Personal.FindAsync(id);
+
+        if (staff == null)
+            return NotFound();
+
+        return View(staff);
+    }
+
+    // GET: /Staff/Reporte
+    [Authorize]
+    public async Task<IActionResult> Reporte()
+    {
+        var resumen = await _context.Personal
+            .GroupBy(s => s.Departamento)
+            .Select(g => new ResumenDepartamentoViewModel
+            {
+                Departamento = g.Key,
+                CantidadEmpleados = g.Count(),
+                TotalSalarios = g.Sum(s => s.Salario),
+                PromedioSalario = g.Average(s => s.Salario)
+            })
+            .OrderByDescending(r => r.TotalSalarios)
+            .ToListAsync();
+
+        return View(resumen);
+    }
+
     // GET: /Staff/Create
     [Authorize(Roles = "Administrador,RRHH")]
     public IActionResult Create()

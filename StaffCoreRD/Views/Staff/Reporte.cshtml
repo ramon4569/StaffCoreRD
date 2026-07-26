@@ -1,0 +1,40 @@
+﻿@model List<StaffCoreRD.Models.ResumenDepartamentoViewModel>
+@{
+    ViewData["Title"] = "Resumen por departamento";
+    var totalGeneral = Model.Sum(r => r.TotalSalarios);
+    var empleadosTotal = Model.Sum(r => r.CantidadEmpleados);
+}
+
+<h2 class="mb-4">Resumen estadístico por departamento</h2>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Departamento</th>
+            <th>Cantidad de empleados</th>
+            <th>Total en salarios</th>
+            <th>Promedio salarial</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Departamento</td>
+                <td>@r.CantidadEmpleados</td>
+                <td>@r.TotalSalarios.ToString("C2")</td>
+                <td>@r.PromedioSalario.ToString("C2")</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr class="table-light fw-bold">
+            <td>Total general</td>
+            <td>@empleadosTotal</td>
+            <td>@totalGeneral.ToString("C2")</td>
+            <td>—</td>
+        </tr>
+    </tfoot>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Volver al listado</a>

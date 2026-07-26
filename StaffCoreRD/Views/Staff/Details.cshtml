@@ -1,0 +1,47 @@
+﻿@model StaffCoreRD.Models.Staff
+@{
+    ViewData["Title"] = "Detalle del empleado";
+}
+
+<h2 class="mb-4">Detalle del empleado</h2>
+
+<div class="card" style="max-width: 500px;">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Nombre</h4>
+
+        <dl class="row mt-3">
+            <dt class="col-sm-4">Cédula</dt>
+            <dd class="col-sm-8">@Model.Cedula</dd>
+
+            <dt class="col-sm-4">Cargo</dt>
+            <dd class="col-sm-8">@Model.Cargo</dd>
+
+            <dt class="col-sm-4">Departamento</dt>
+            <dd class="col-sm-8">@Model.Departamento</dd>
+
+            <dt class="col-sm-4">Salario</dt>
+            <dd class="col-sm-8">@Model.Salario.ToString("C2")</dd>
+
+            <dt class="col-sm-4">Fecha de ingreso</dt>
+            <dd class="col-sm-8">@Model.FechaIngreso.ToShortDateString()</dd>
+
+            <dt class="col-sm-4">Estado</dt>
+            <dd class="col-sm-8">
+                @if (Model.Activo)
+                {
+                    <span class="badge bg-success">Activo</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Inactivo</span>
+                }
+            </dd>
+        </dl>
+
+        <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+        @if (User.IsInRole("Administrador") || User.IsInRole("RRHH"))
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Editar</a>
+        }
+    </div>
+</div>
